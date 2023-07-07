@@ -166,7 +166,7 @@ void i2c_read(uint8_t addr, uint8_t bytes) {
     log_printf("%02x ", rbuf[i]);
     bridge.write(rbuf[i]);
   }
-  bridge.write('\n');
+  bridge.write('\0');
   log_println();
 }
 
