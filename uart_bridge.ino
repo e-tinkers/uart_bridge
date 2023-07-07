@@ -104,9 +104,7 @@ int wait_for_cmd() {
     if(bridge.available()) {
       uint8_t c = bridge.read();
       switch (c) {
-        case '\r':
-          break;
-        case '\n':
+        case 'P':
           rx_buf[cnt] = '\0';
           return cnt;
         default:
