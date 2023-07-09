@@ -57,20 +57,19 @@
 #define REG_I2C_STATE      10 // default I2C_OK, See I2C Status
 
 // GPIO Configuration
-#define IO_INPUT_LOW      0
-#define IO_INPUT_HIGH     1
-#define IO_PUSH_PULL      2
-#define IO_OPEN_DRAIN     3
+#define IO_INPUT           1
+#define IO_PUSH_PULL       2
+#define IO_OPEN_DRAIN      3
 
 // I2C Clock Configuration
-#define I2C_CLK_375KHZ    0x05  // 0x05 mimimum value
-#define I2C_CLCK_99KHZ    0x13  // 19
+#define I2C_CLK_375KHZ     0x05  // 0x05 mimimum value
+#define I2C_CLCK_99KHZ     0x13  // 19
 
 // I2C Status
-#define I2C_OK            0xF0
-#define I2C_NACK_ON_ADDR  0xF1
-#define I2C_NACK_ON_DATA  0xF2
-#define I2C_TIME_OUT      0xF8
+#define I2C_OK             0xF0
+#define I2C_NACK_ON_ADDR   0xF1
+#define I2C_NACK_ON_DATA   0xF2
+#define I2C_TIME_OUT       0xF8
 
 // ----------------- Application variables -----------
 
@@ -104,8 +103,9 @@ int wait_for_cmd() {
     if(bridge.available()) {
       uint8_t c = bridge.read();
       switch (c) {
+        // TO-DO: support i2c_write without the STOP condition 'P'
         case 'P':
-          rx_buf[cnt] = '\0';
+          rx_buf[cnt++] = c;
           return cnt;
         default:
           rx_buf[cnt++] = c;
@@ -164,7 +164,6 @@ void i2c_read(uint8_t addr, uint8_t bytes) {
     log_printf("%02x ", rbuf[i]);
     bridge.write(rbuf[i]);
   }
-  bridge.write('\0');
   log_println();
 }
 
@@ -235,6 +234,7 @@ void reg_read(uint8_t reg) {
  *    REG_BAUD_RATE_SETTING = (7372800 / baud_rate) - 16;
  * 3 - set i2c clock
  *   'W' + REG_I2C_CLK_L + I2C_CLCK_VALUE + REG_I2C_CLK_H + 0 + 'P'
+ *   TO-DO: support of writting single register and writing to registers other than those mentioned
  */
 void reg_write(uint8_t *buffer) {
 

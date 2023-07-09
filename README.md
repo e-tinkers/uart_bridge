@@ -30,9 +30,6 @@ The value of ESP UART Bridge returns I2C status based on the values return from 
 ```
 In the case where the status code is not available in SC18IM704, the status from the `Wire` Arduino library will be return (e.g. status 1 and status 4).
 
-### Write to Register
-Unlike the SC18IM704 where one could write to any one of the 11 registers, ESP UART only allows for writing to 6 registers for practical reasons at current implementation. Those are the two registers for baud rate configuration, two registers for GPIO port configurations and registers for configuring I2C clock speed. Writing to any other registers has no effect.
-
 ### Power Down function
 The power down function is currently not supported on ESP UART Bridge.
 
@@ -40,7 +37,13 @@ The power down function is currently not supported on ESP UART Bridge.
 When sending the command for read ID, the SC18IM704 will return a 16-character NULL-terminated string as "SC18IM704 1.0.1", the string returned by ESP UART Bridge is also 16-character with NULL terminator but as "U-Bridge v1.0.0". 
 
 ### Supported UART Baud Rate
-As a design decision, the ESP UART Baidge only support one of the 10 baud rates, 9600, 14400, 19200, 28800, 38400, 57600, 76800, 115200, 230400, 460800. Any baud rate other than those would be rejected and has no effect.
+As a design decision, the ESP UART Bridge only support one of the 10 baud rates, 9600, 14400, 19200, 28800, 38400, 57600, 76800, 115200, 230400, 460800. Any baud rate other than those would be rejected and has no effect.
+
+### Default I2C Speed
+For ESP UART Bridge, the default I2C Speed is set to 400kHz, this is different from the SC18IM704 which has the default I2C speed of 100kHz.
+
+### Default UART Baud Rate
+The default baud rate of ESP UART Bridge is 115200 Baud, while SC18IM704 has the default baud rate of 9600.
 
 ## References
 
